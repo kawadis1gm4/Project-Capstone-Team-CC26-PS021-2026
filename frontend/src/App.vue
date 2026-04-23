@@ -13,7 +13,7 @@ const namaUser = ref(localStorage.getItem('namaWorker') || 'Pekerja')
 // Fungsi Tarik Data
 const fetchRiwayat = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/moods')
+    const res = await axios.get('/api/moods')
     riwayat.value = res.data
   } catch (e) { console.error("Gagal load data") }
 }
@@ -21,7 +21,7 @@ const fetchRiwayat = async () => {
 // Fungsi Simpan Data
 const handleSelesai = async (jawaban) => {
   try {
-    await axios.post('http://localhost:3000/api/moods', { jawabanTeks: jawaban })
+    await axios.post('/api/moods', { jawabanTeks: jawaban })
     step.value = 'view'
     currentMenu.value = 'dashboard'
     fetchRiwayat()
@@ -32,7 +32,7 @@ const handleSelesai = async (jawaban) => {
 const hapusRiwayat = async (id) => {
   if (!confirm("Hapus catatan ini permanen?")) return
   try {
-    await axios.delete(`http://localhost:3000/api/moods/${id}`)
+    await axios.delete(`/api/moods/${id}`)
     fetchRiwayat()
   } catch (e) { alert("Gagal menghapus") }
 }

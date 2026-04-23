@@ -2,10 +2,14 @@ const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
+const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve static files dari frontend build
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 let db;
 
@@ -82,6 +86,11 @@ app.delete('/api/moods/:id', async (req, res) => {
     } catch (e) {
         res.status(500).json({ error: "Gagal hapus data" });
     }
+});
+
+// Fallback untuk SPA: serve index.html untuk route yang tidak ketemu
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
 app.listen(3000, () => console.log("Server jalan di port 3000"));
